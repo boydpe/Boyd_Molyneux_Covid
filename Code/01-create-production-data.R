@@ -1,4 +1,5 @@
 # covid data
+unzip("Data/Raw/us-counties.zip", exdir = "Data/Raw/")
 covid = read_csv("Data/Raw/us-counties.csv")
 covid = as.data.frame(covid)
 covid$sc = paste(covid$state, covid$county, sep = "")
