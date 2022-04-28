@@ -1,9 +1,13 @@
+# Steps that are working
 source("Code/00-load-packages.R")
 source("Code/01-compile-cpp-functions.R")
-source("Code/01-create-production-data.R")
-source("Code/02-misd-functions.R")
-source("Code/03-estimate-models.R")
-source("Code/03-generate-simulations.R")
-source("Code/04-model-estimates-to-dataframe.R")
-source("Code/05-generate-plots.R")
-source("Code/05-generate-summary-tables.R")
+
+# Steps that need cleaning
+
+# source("Code/01-create-production-data.R")
+# source("Code/02-misd-functions.R")
+# source("Code/03-estimate-models.R")
+# source("Code/03-generate-simulations.R")
+# source("Code/04-model-estimates-to-dataframe.R")
+# source("Code/05-generate-plots.R")
+# source("Code/05-generate-summary-tables.R")
