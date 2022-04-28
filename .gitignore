@@ -26,6 +26,7 @@ vignettes/*.pdf
 *.knit.md
 # R Environment Variables
 .Renviron
-
 # Stuff James added
 *.DS_Store
+/Data/Raw/__MACOSX/
+/Data/Raw/us-counties.csv
