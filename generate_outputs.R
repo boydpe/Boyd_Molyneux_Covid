@@ -2,6 +2,7 @@
 source("Code/00-load-packages.R")
 source("Code/01-compile-cpp-functions.R")
 source("Code/01-create-production-data.R")
+source("Code/02-read-production-data.R")
 
 # Steps that need cleaning
 
