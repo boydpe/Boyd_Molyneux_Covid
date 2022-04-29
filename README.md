@@ -4,7 +4,7 @@ This repository stores the source code and outputs for our article **Post link t
 
 The `Code` and `Data` folders contains all the code and data necessary to generate the `Outputs`, which we include to save people time from running the code themselves.
 
-Session info describing our system at the time of comilation is below
+Session info describing our system at the time of compilation is below
 
 ```
 > sessionInfo()
