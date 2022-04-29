@@ -1,0 +1,46 @@
+---
+title: "Table 6"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(kableExtra)
+library(dplyr)
+library(tidyr)
+library(forcats)
+fail_df = readRDS("Outputs/Summaries/fail_df.Rds")
+```
+
+```{r}
+## Table 6 --------------------------------------------------------------------
+
+fail_df1 = fail_df %>% 
+  select(-c(k_diff, pop)) %>% 
+  select(county, state, date,
+         br, k_before, k_during,
+         duration, cases, fail) %>% 
+  # If convergence failed, replace estimated values with "-"
+  mutate(
+    br = ifelse(fail == 1, "-", br),
+    duration = ifelse(fail == 1, "-", duration),
+    k_before = ifelse(fail == 1, "-", k_before),
+    k_during = ifelse(fail == 1, "-", k_during),
+    cases = ifelse(fail == 1, "-", cases)
+  ) %>% 
+  mutate(fail = ifelse(fail == 1, "No", "Yes"))
+
+kable(fail_df1, 
+      caption = "Counties in which little to no increase in COVID-19 productivity, over baseline, was found following campaign rallies held by then President Donald Trump during the 2020 United States election cycle",
+      label = "results_fail", 
+      format = "latex", 
+      col.names = c("County", "State", "Date of Rally", 
+                    "$\\mu_\\ell$", "$k_\\ell$", "$k_\\ell^*$", 
+                    "Duration", "Cases", "Converged?"), 
+      escape = FALSE,
+      booktabs = TRUE,
+      position = "h") %>% 
+  kableExtra::kable_styling(latex_options=c("repeat_header"))  %>% 
+  column_spec(column = 9, latex_column_spec = "c")
+```
+

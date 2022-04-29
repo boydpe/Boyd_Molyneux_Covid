@@ -1,0 +1,45 @@
+---
+title: "Table 2"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(kableExtra)
+library(dplyr)
+sims = readRDS("Outputs/Model Fits/final_sims3.Rds")
+mods = readRDS("Outputs/Model Fits/final_models8.Rds")
+```
+
+```{r}
+## Table 2 --------------------------------------------------------------------
+n_sim = 25
+
+est_time = unlist(mods$opt_length)
+real_time = rep(c(0,10,20,30,40), each = 2*n_sim)
+time_df = data.frame(est_time, real_time, diff = est_time - real_time)
+
+sim_table = time_df %>% 
+  group_by(real_time) %>% 
+  summarize(min = min(diff),
+            five = round(quantile(diff, prob = 0.05)),
+            Q1 = round(quantile(diff, prob = 0.25)),
+            median = median(diff),
+            Q3 = round(quantile(diff, prob = 0.75)),
+            ninefive = round(quantile(diff, prob = 0.95)),
+            max = max(diff))
+#mean = mean(diff),)
+
+kableExtra::kbl(sim_table,
+                align = c("c"), position = "h", booktabs = TRUE, format = "latex", label = "sim_duration",
+                col.names = c("True Duration",
+                              "Minimum",
+                              "5th",
+                              "25th",
+                              "Median",
+                              "75th",
+                              "95th",
+                              "Maximum"),
+                caption = "Differences between estimated and actual durations from simulations")
+```
+

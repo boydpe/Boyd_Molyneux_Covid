@@ -1,0 +1,33 @@
+---
+title: "Table 4"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(kableExtra)
+library(dplyr)
+success_df = readRDS("Outputs/Summaries/success_df.Rds")
+```
+
+```{r}
+## Table 4 --------------------------------------------------------------------
+
+success_df1 = success_df %>% 
+  select(-c(fail, k_diff, pop)) %>% 
+  select(county, state, date, 
+         br, k_before, k_during, 
+         duration, cases)
+kable(success_df1, 
+      caption = "Counties in which an increase in COVID-19 productivity, over baseline, was found following campaign rallies held by then President Donald Trump during the 2020 United States election cycle",
+      label = "results_success", 
+      format = "latex", 
+      col.names = c("County", "State", "Date of Rally", 
+                    "$\\mu_\\ell$", "$k_\\ell$", "$k_\\ell^*$", 
+                    "Duration", "Cases"), 
+      escape = FALSE,
+      booktabs = TRUE,
+      position = "h") %>% 
+  kableExtra::kable_styling(latex_options=c("repeat_header"))
+```
+

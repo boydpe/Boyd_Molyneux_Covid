@@ -1,0 +1,55 @@
+---
+title: "Table 3"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(kableExtra)
+library(dplyr)
+sims = readRDS("Outputs/Model Fits/final_sims3.Rds")
+mods = readRDS("Outputs/Model Fits/final_models8.Rds")
+```
+
+```{r}
+## Table 3 --------------------------------------------------------------------
+n_sim = 25
+# Code for comparing k during to k before
+rat <- vector(length = 250)
+
+for (i in seq_along(rat)) {
+  if (mods$opt_length[[i]] == 0) {
+    rat[i] <- 0
+    next
+  }
+  rat[i] <- (mods$k[[i]][mods$opt_length[[i]] + 30]) / (mean(mods$k[[i]][1:28]) + mods$br[[i]])
+  
+}
+
+durations = rep(c(10,20,30,40), each = 2*n_sim)
+prod_df = data.frame(durations, add_prod = rat[51:250])
+
+prod_df %>% 
+  group_by(durations) %>% 
+  # summarize(quantile(add_prod))
+  summarize(
+    min = round(quantile(add_prod, p = 0.00), digits = 2),
+    five = round(quantile(add_prod, p = 0.05), digits = 2),
+    q1 = round(quantile(add_prod, p = 0.25), digits = 2),
+    median = round(quantile(add_prod, p = 0.50), digits = 2),
+    q3 = round(quantile(add_prod, p = 0.75), digits = 2),
+    ninefive = round(quantile(add_prod, p = 0.95), digits = 2),
+    max = round(quantile(add_prod, p = 1.00), digits = 2)) %>% 
+  kbl(align = c("c"), position = "h", booktabs = TRUE, format = "latex", label = "sim_prod",
+      col.names = c(
+        "Durations",
+        "Minimum",
+        "5th",
+        "25th",
+        "Median",
+        "75th",
+        "95th",
+        "Maximum"),
+      caption = "Estimated additional productivity relative to baseline from simulations")
+```
+

@@ -1,0 +1,50 @@
+---
+title: "Table 5"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(kableExtra)
+library(dplyr)
+library(tidyr)
+library(forcats)
+success_df = readRDS("Outputs/Summaries/success_df.Rds")
+```
+
+```{r}
+## Table 5 --------------------------------------------------------------------
+
+## Summary stats for success_df
+success_df %>% 
+  mutate(added_prod = k_during / (k_before + br)) %>% 
+  select(county, 
+         `Additional productivity relative to baseline` = added_prod, 
+         `Duration` = duration, 
+         `Additional cases` = cases) %>% 
+  pivot_longer(cols = 2:4, names_to = "metric", values_to = "vals") %>% 
+  mutate(metric = fct_inorder(metric)) %>% 
+  group_by(metric) %>% 
+  summarize(
+    min = round(quantile(vals, p = 0.00), digits = 2),
+    five = round(quantile(vals, p = 0.05), digits = 2),
+    q1 = round(quantile(vals, p = 0.25), digits = 2),
+    median = round(quantile(vals, p = 0.50), digits = 2),
+    q3 = round(quantile(vals, p = 0.75), digits = 2),
+    ninefive = round(quantile(vals, p = 0.95), digits = 2),
+    max = round(quantile(vals, p = 1.00), digits = 2)) %>% 
+  kbl(align = c("l", rep("c", 7)), position = "h", booktabs = TRUE, 
+      format = "latex", label = "success_summ",
+      col.names = c(
+        "",
+        "Minimum",
+        "5th",
+        "25th",
+        "Median",
+        "75th",
+        "95th",
+        "Maximum"),
+      caption = "Estimated additional productivity relative to baseline from simulations") %>% 
+  column_spec(1, width = "1.25in") 
+```
+
