@@ -51,3 +51,6 @@ results_df <- results_df %>%
 # create success and failure tables
 success_df = results_df %>% filter(is.na(duration) == FALSE & fail == 0 & cases > 0)
 fail_df = results_df %>% filter(is.na(duration) == TRUE | fail == 1 | cases == 0)
+
+saveRDS(success_df, "Outputs/Summaries/success_df.Rds")
+saveRDS(fail_df, "Outputs/Summaries/fail_df.Rds")
