@@ -118,8 +118,7 @@ misd_ee = function(counties, rallies, time_bins = NULL,
     kd = c()
     max_at = c()
     # i = 1
-    while(max_diff[[i]] > stopwhen) { #} & n_iterations[[i]] < 500){
-      
+    while(max_diff[[i]] > stopwhen) {
       # ATTEMPT TO WORK AROUND NONCONVERGING PROCESSES
       if(n_iterations[[i]] == 500) {
         counties[[i]] = counties[[i]][-1,]
@@ -131,7 +130,7 @@ misd_ee = function(counties, rallies, time_bins = NULL,
       # CALC BR OF EACH COUNTY, OVER ENTIRE PERIOD 
       br[[i]] = calc_br(p0[[i]], 
                         counties[[i]]$newcases,
-                        ndays[[i]])#, ee_date[[i]])
+                        ndays[[i]])
       
       # CALCULATE G TRIGGERING FUNC EACH COUNTY, OVER ENTIRE PERIOD 
       # g is matrix of num, den
@@ -152,7 +151,7 @@ misd_ee = function(counties, rallies, time_bins = NULL,
         (counties[[i]]$newcases * g_integral[[i]])
       
       # CALC K PRE EE 
-      k_pre[[i]] = mean(ks[1:n_pre[[i]]]) #/
+      k_pre[[i]] = mean(ks[1:n_pre[[i]]]) 
       
       # CHECK THAT CASES ACTUALLY INCREASE
       post_data = counties[[i]][which((counties[[i]]$time > ee_time[[i]]) &
@@ -184,7 +183,7 @@ misd_ee = function(counties, rallies, time_bins = NULL,
         k_both[j,2] = mean(ks[(n_pre[[i]] + 1 + j):(n_size[[i]] - cut_time)])
         k_both[j,3] = j
       }
-      k_2[[i]] = k_both #k_both[1:(m),]
+      k_2[[i]] = k_both
       
       # fit loess curve, find minimum of difference(min first derivative,
       # estimate of peak)
@@ -381,7 +380,7 @@ misd_ee_state = function(counties, rallies, time_bins = NULL,
   
   # ITERATE
   for(i in 1:nc) {
-    while(max_diff[[i]] > stopwhen) { #} & n_iterations[[i]] < 500){
+    while(max_diff[[i]] > stopwhen) {
       
       # ATTEMPT TO WORK AROUND NONCONVERGING PROCESSES
       if(n_iterations[[i]] == 500) {
@@ -395,7 +394,7 @@ misd_ee_state = function(counties, rallies, time_bins = NULL,
       # CALC BR OF EACH COUNTY, OVER ENTIRE PERIOD 
       br[[i]] = calc_br(p0[[i]], 
                         counties[[i]]$newcases,
-                        ndays[[i]])#, ee_date[[i]])
+                        ndays[[i]])
       
       # CALCULATE G TRIGGERING FUNC EACH COUNTY, OVER ENTIRE PERIOD 
       # g is matrix of num, den
@@ -414,7 +413,7 @@ misd_ee_state = function(counties, rallies, time_bins = NULL,
       ks = (colSums(p0[[i]]) - diag(p0[[i]]))*
         (counties[[i]]$newcases * g_integral[[i]])      
       # CALC K PRE EE  
-      k_pre[[i]] = mean(ks[1:n_pre[[i]]]) #/
+      k_pre[[i]] = mean(ks[1:n_pre[[i]]])
       
       # CALC AVG COLSUMS FOR VARIABLE DURING/POST LENGTHS
       # m = number of rows in during/post
@@ -428,7 +427,7 @@ misd_ee_state = function(counties, rallies, time_bins = NULL,
         k_both[j,2] = mean(ks[(n_pre[[i]] + 1 + j):(n_size[[i]] - cut_time)])
         k_both[j,3] = j
       }
-      k_2[[i]] = k_both #k_both[1:(m),]
+      k_2[[i]] = k_both
       
       # fit loess curve, find minimum of difference(min first derivative,
       # estimate of peak)
@@ -441,7 +440,7 @@ misd_ee_state = function(counties, rallies, time_bins = NULL,
       if(is.na(opt_length[[i]]) == TRUE) {
         opt_length[[i]] = 0
       }
-
+      
       if(opt_length[[i]] == 0) {
         k_post[[i]] = mean(ks[(n_pre[[i]]):(n_pre[[i]] + m)])
         k_during[[i]] = 0

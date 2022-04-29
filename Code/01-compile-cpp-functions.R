@@ -1,5 +1,3 @@
-# rcpp files --------------------------------------------------------------
-
 # function files
 sourceCpp("Code/Rcpp Functions/0_time_bins.cpp")
 sourceCpp("Code/Rcpp Functions/1_p0.cpp")
@@ -13,6 +11,7 @@ sourceCpp("Code/Rcpp Functions/p_divide.cpp")
 sourceCpp("Code/Rcpp Functions/get_prod.cpp")
 sourceCpp("Code/Rcpp Functions/2_br_ee.cpp")
 sourceCpp("Code/Rcpp Functions/3_trig_time_ee.cpp")
+
 # simulation files
 sourceCpp("Code/Rcpp Functions/sim_k.cpp")
 sourceCpp("Code/Rcpp Functions/0_bins.cpp")

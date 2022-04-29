@@ -33,7 +33,7 @@ covid_sim = function(duration = c(30, 50, 40),
     k_val = pick_k(current_time, k, duration)
     
     ## draw number of children per parent
-    n.child = rpois(1, k_val) # / mu?
+    n.child = rpois(1, k_val)
     data_all[i,6] = n.child
     # n.child is random number drawn
     # n_child is data frame value
