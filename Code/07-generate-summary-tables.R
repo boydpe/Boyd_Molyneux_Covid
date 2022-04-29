@@ -1,3 +1,10 @@
+
+
+## Table 2 --------------------------------------------------------------------
+sims = readRDS("Outputs/Model Fits/final_sims3.Rds")
+mods = readRDS("Outputs/Model Fits/final_models8.Rds")
+n_sim = 25
+
 est_time = unlist(mods$opt_length)
 real_time = rep(c(0,10,20,30,40), each = 2*n_sim)
 time_df = data.frame(est_time, real_time, diff = est_time - real_time)
@@ -30,15 +37,14 @@ kableExtra::kbl(sim_table,
 # labs(x = "True duration",
 #      y = "Duration error")
 
-n_fail_dur_0 <- time_df %>% 
-  filter(real_time == 0) %>% 
-  summarize(sum(diff > 0))
-n_fail_dur_10 <- time_df %>% 
-  filter(real_time == 10) %>% 
-  summarize(sum(diff < -9))
+# n_fail_dur_0 <- time_df %>% 
+#   filter(real_time == 0) %>% 
+#   summarize(sum(diff > 0))
+# n_fail_dur_10 <- time_df %>% 
+#   filter(real_time == 10) %>% 
+#   summarize(sum(diff < -9))
 
-
-###########
+## Table 3 --------------------------------------------------------------------
 
 # Code for comparing k during to k before
 rat <- vector(length = 250)
@@ -78,17 +84,17 @@ prod_df %>%
         "Maximum"),
       caption = "Estimated additional productivity relative to baseline from simulations")
 
-#
-n_noeffect <- prod_df %>% 
-  filter(durations == 10, add_prod == 0) %>% 
-  summarize(n())
+# #
+# n_noeffect <- prod_df %>% 
+#   filter(durations == 10, add_prod == 0) %>% 
+#   summarize(n())
 
 # ggplot(prod_df) +
 #   geom_histogram(aes(x = add_prod)) +
 #   facet_wrap(~durations, scales = "free")
 
 
-#########
+## Table 4 --------------------------------------------------------------------
 
 success_df1 = success_df %>% 
   select(-c(fail, k_diff, pop)) %>% 
@@ -106,9 +112,9 @@ kable(success_df1,
       booktabs = TRUE,
       position = "h") %>% 
   kableExtra::kable_styling(latex_options=c("repeat_header"))
-#%>% kableExtra::kable_styling(font_size = 9)
 
-###########
+
+## Table 5 --------------------------------------------------------------------
 
 ## Summary stats for success_df
 success_df %>% 
@@ -143,7 +149,7 @@ success_df %>%
   column_spec(1, width = "1.25in") 
 
 
-#######
+## Table 6 --------------------------------------------------------------------
 
 fail_df1 = fail_df %>% 
   select(-c(k_diff, pop)) %>% 
@@ -172,14 +178,3 @@ kable(fail_df1,
       position = "h") %>% 
   kableExtra::kable_styling(latex_options=c("repeat_header"))  %>% 
   column_spec(column = 9, latex_column_spec = "c")
-# %>% kableExtra::kable_styling(font_size = 7)
-
-# # Number of durations = 0
-# fail_df %>%
-#   mutate(
-#     no_effect = "No effect",
-#     no_effect = ifelse(duration > 0, "No effect relative to state", no_effect),
-#     no_effect = ifelse(fail == 1, "Failed", no_effect)
-#          ) %>%
-#   group_by(no_effect) %>%
-#   summarize(n())
