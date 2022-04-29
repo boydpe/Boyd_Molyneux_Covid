@@ -1,13 +1,15 @@
 ---
 title: "Table 4"
-output: pdf_document
+output: 
+  pdf_document:
+    extra_dependencies: ["booktabs"]
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 library(kableExtra)
 library(dplyr)
-success_df = readRDS("Outputs/Summaries/success_df.Rds")
+success_df = readRDS("../Outputs/Summaries/success_df.Rds")
 ```
 
 ```{r}

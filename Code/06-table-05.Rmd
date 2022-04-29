@@ -1,6 +1,8 @@
 ---
 title: "Table 5"
-output: pdf_document
+output: 
+  pdf_document:
+    extra_dependencies: ["booktabs","tabularx"]
 ---
 
 ```{r setup, include=FALSE}
@@ -9,7 +11,7 @@ library(kableExtra)
 library(dplyr)
 library(tidyr)
 library(forcats)
-success_df = readRDS("Outputs/Summaries/success_df.Rds")
+success_df = readRDS("../Outputs/Summaries/success_df.Rds")
 ```
 
 ```{r}

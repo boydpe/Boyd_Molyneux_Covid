@@ -1,14 +1,16 @@
 ---
 title: "Table 2"
-output: pdf_document
+output: 
+  pdf_document:
+    extra_dependencies: ["booktabs"]
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 library(kableExtra)
 library(dplyr)
-sims = readRDS("Outputs/Model Fits/final_sims3.Rds")
-mods = readRDS("Outputs/Model Fits/final_models8.Rds")
+sims = readRDS("../Outputs/Model Fits/final_sims3.Rds")
+mods = readRDS("../Outputs/Model Fits/final_models8.Rds")
 ```
 
 ```{r}
