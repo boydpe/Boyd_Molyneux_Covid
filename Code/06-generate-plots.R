@@ -1,6 +1,6 @@
+## Figure 01 -------------------------------------------
 us_states <- map_data("state") 
-us_counties = readRDS("Data/us_counties.Rds")
-# relevant code in appendix
+us_counties = readRDS("Data/Processed/us_counties.Rds")
 
 cols = c("0" = "gray80", "1" = "black")
 county_map = ggplot() + geom_polygon( data = us_counties, aes(x=long, y=lat, group=group, fill = as.factor(rally), color = as.factor(rally)), color="gray50", #"darkblue", #fill="lightblue",
@@ -13,48 +13,13 @@ county_map = ggplot() + geom_polygon( data = us_counties, aes(x=long, y=lat, gro
         axis.text=element_blank(),
         axis.ticks=element_blank(),
         panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank())
+        panel.grid.minor = element_blank()) +
+  coord_map()
 
-#########
+ggsave("Outputs/Plots/figure01.pdf", county_map, width = 8, height = 6)
 
-n = length(out_all$data)
 
-# find counties that converged and had length > 1
-county_fail = which(out_all$fail == 1)
-county_no_impact = which(out_all$opt_length == 1)
-success = c(1:n)[-c(county_fail, county_no_impact)]
-fail = county_fail
-
-# Plot state vs. county k levels
-compare_plots = list()
-for(i in 1:length(success)) { #length(success)) {
-  compare_plots[[i]] = ggplot() + 
-    # geom_point(data = out_all$data[[success[i]]], aes(x = date, y = newcases), alpha = 0.2) + 
-    geom_vline(xintercept = out_all$data[[success[i]]]$date[1] +  lubridate::days(out_all$ee_time[[success[i]]] -1)) + 
-    geom_vline(xintercept = out_all$data[[success[i]]]$date[1] +  lubridate::days(out_all$ee_time[[success[i]]] -1 + out_all$opt_length[[success[[i]]]])) + 
-    geom_step(data = data.frame(k = out_all$k[[success[[i]]]] / out_all$data[[success[[i]]]]$POPESTIMATE2020, 
-                                date = out_all$data[[success[i]]]$date),
-              aes(x = date, y = k),
-              linetype = "solid") +
-    geom_step(data = data.frame(k = out_state$k[[success[[i]]]] /
-                                  out_state$data[[success[[i]]]]$pop_tot, 
-                                date = out_state$data[[success[i]]]$date),
-              aes(x = date, y = k),
-              linetype = "dashed") +
-    ggtitle(paste(out_all$data[[success[i]]]$county, 
-                  ",", 
-                  out_all$data[[success[i]]]$state)) + 
-    theme(axis.title.x = element_blank(),
-          axis.title.y = element_blank(),
-          plot.title = element_text(size = 9))
-}
-# this plot technique works but we may need to alter for population or county number?
-# compare_plots
-# img1 = patchwork::wrap_plots(compare_plots, ncol = 3)
-
-#ggsave("Images/img1.pdf", img1, height = 24)
-
-#########
+## Figure 02 -------------------------------------------
 
 # Grid of plots
 # Plot 1: results
@@ -72,7 +37,7 @@ for(i in 1:nrow(results_df)) {
     results_df$effect[i] = 1
   } else if (results_df$fail[i] == 0 &
              results_df$duration[i] > 0 &
-             results_df$k_diff > 0){
+             results_df$k_diff[i] > 0){
     results_df$result[i] = "Rally effect\npresent"
     results_df$effect[i] = 0.5
   } else {
@@ -111,11 +76,10 @@ p4 = success_df %>%
   labs(tag = "D", y = "")
 
 plot_grid = gridExtra::grid.arrange(p1, p2, p3, p4, nrow = 2, ncol = 2)
-# ggsave("Images/plot_grid.pdf", plot_grid)
+ggsave("Outputs/Plots/figure02.pdf", plot = plot_grid, width = 6, height = 6)
 
-######
 
-# results_df
+## Figure 03 -------------------------------------------
 ggplot(data = results_df) + 
   geom_dotplot(aes(x = date, fill = result), stackgroups = T,
                stackdir = "center", binpositions="all", 
@@ -125,8 +89,4 @@ ggplot(data = results_df) +
         axis.ticks.y=element_blank(), 
         legend.position = "top", legend.title = element_blank()) +
   labs(x = "Date")
-
-# ggplot(data = results_df) +
-#   geom_point(aes(x = date, y = log(pop), color = result))
-# timeline + theme_hc()
-# ggsave("Images/timeline.pdf", timeline)
+ggsave("Outputs/Plots/figure03.pdf", width = 6, height = 6)
