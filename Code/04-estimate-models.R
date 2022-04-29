@@ -1,16 +1,9 @@
-# create time bins
-# tb = c(0, 7, 14, 30, 60, 190)
-# ZZQ: c(1,3,7,14,30,60,190)
+# create time bins for temporal decay
 tb = c(0, 3, 7, 14, 30, 60, 190)
 tbins = list()
 for(i in 1:nrow(rally)){
   tbins[[i]] = tb
 }
-# temporary adjustment for troubleshooting
-
-# all_data[[2]]$cases[1:5] = c(8627, 8896, 9112, 9522, 9815) #20000
-# was 8627, 8896, 9112, 9522, 9815
-
 # model each county 
 out_all = misd_ee(counties = all_data, rallies = rally,
                   time_bins = tbins, cut_time = 14,
@@ -23,3 +16,6 @@ out_state = misd_ee_state(counties = state_sub_rally, rallies = rally,
                           stopwhen = 1e-3, set_length = out_all$opt_length,
                           loess_smooth = 0.20
 )
+
+saveRDS(out_all, "Outputs/Model Fits/out_all.Rds")
+saveRDS(out_state, "Outputs/Model Fits/out_state.Rds")
